@@ -1,4 +1,4 @@
-description: Train Transformer LM
+description: Deliberately overfit a Transformer LM on Wikitext-103
 
 target:
   # which virtual cluster you belong to (msrlabs, etc.). Everyone has access to "msrlabs".
@@ -21,7 +21,7 @@ code:
 storage:
         my_output:
                 storage_account_name: tomstrg 
-                container_name: txl-generations 
+                container_name: trained
                 is_output: True
         my_input:
                 storage_account_name: tomstrg 
