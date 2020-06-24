@@ -1,0 +1,40 @@
+description: Train Transformer LM
+
+target:
+  # which virtual cluster you belong to (msrlabs, etc.). Everyone has access to "msrlabs".
+  vc: intvc
+  # physical cluster to use (cam, gcr, rr1, rr2) or Azure clusters (eu1, eu2, etc.)
+  cluster: rr1
+
+environment:
+  image: microsoft_pytorch:v1.2.0_gpu_cuda9.0_py36_release_gpuenv_hvd0.16.2
+  registry: phillyregistry.azurecr.io
+  setup:
+          - pip install torch==1.5.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html --user
+          - pip install --editable . --user
+
+code:
+  # local directory of the code. this will be uploaded to the server.
+  # $CONFIG_DIR is expanded to the directory of this config file
+  local_dir: $CONFIG_DIR
+
+storage:
+        my_output:
+                storage_account_name: tomstrg 
+                container_name: txl-generations 
+                is_output: True
+        my_input:
+                storage_account_name: tomstrg 
+                container_name: neurogen 
+
+
+# list of jobs to run, we run 2 jobs in this example
+jobs:
+  # name must be unique across the jobs
+- name: knn
+  # one gpu
+  sku: G8
+  command:
+  -  bash lm_train.sh
+
+
